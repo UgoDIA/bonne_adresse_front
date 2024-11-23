@@ -17,7 +17,7 @@ export const UploadData = async (data: File) => {
     }
 
     const response = await PostFile(
-      "http://141.94.27.12/bonne_adresse/upload_file/",
+      process.env.API_REST + "/upload",
       data
     );
 
