@@ -237,3 +237,11 @@ body,
   width: 10px; /* Largeur du point */
   height: 10px; /* Hauteur du point */
 }
+
+.chart-container {
+  transition: transform 0.3s ease-in-out;
+}
+
+.chart-container:hover {
+  transform: scale(1.1);
+}

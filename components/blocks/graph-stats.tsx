@@ -44,32 +44,35 @@ export function GraphStats({ addressStats }: { addressStats: AddressStats }) {
   const chartDataNoMatch = [{ noMatch: no_match_pourcent, fill: "red" }];
 
   return (
-    <CardContent className="flex flex-col justify-between bg-white rounded-md shadow-md p-6">
+    <CardContent className="flex flex-col justify-between bg-white rounded-md shadow-md p-6 cursor-pointer">
       <ChartContainer
         config={chartConfigCorrect}
-        className="mx-auto aspect-square max-h-[150px] w-[150px]">
+        className="mx-auto aspect-square max-h-[150px] w-[150px] chart-container cursor-pointer">
         <RadialBarChart
           data={chartDataCorrect}
           startAngle={180}
           endAngle={180 - angleCorrect}
           innerRadius={65}
-          outerRadius={90}>
+          outerRadius={90}
+          className="cursor-pointer">
           <PolarGrid
             gridType="circle"
             radialLines={false}
             stroke="none"
-            className="first:fill-muted last:fill-background"
+            className="first:fill-muted last:fill-background cursor-pointer"
             polarRadius={[69, 59]}
           />
           <RadialBar
             dataKey="correct"
             background
             cornerRadius={10}
+            className="cursor-pointer"
           />
           <PolarRadiusAxis
             tick={false}
             tickLine={false}
-            axisLine={false}>
+            axisLine={false}
+            className="cursor-pointer">
             <Label
               content={({ viewBox }) => {
                 if (viewBox && "cx" in viewBox && "cy" in viewBox) {
@@ -88,8 +91,8 @@ export function GraphStats({ addressStats }: { addressStats: AddressStats }) {
                       <tspan
                         x={viewBox.cx}
                         y={(viewBox.cy || 0) + 24}
-                        className="fill-muted-foreground text-[14px] font-sans font-bold">
-                        Adresse correcte
+                        className="fill-muted-foreground text-[16px] font-sans font-bold">
+                        Correcte
                       </tspan>
                     </text>
                   );
@@ -101,30 +104,34 @@ export function GraphStats({ addressStats }: { addressStats: AddressStats }) {
       </ChartContainer>
       <ChartContainer
         config={chartConfigCorriger}
-        className="mx-auto aspect-square max-h-[150px] w-[150px]">
+        className="mx-auto aspect-square max-h-[150px] w-[150px] chart-container cursor-pointer">
         <RadialBarChart
           data={chartDataCorriger}
           startAngle={180}
           endAngle={180 + angleCorriger}
           innerRadius={65}
-          outerRadius={90}>
+          outerRadius={90}
+          className="cursor-pointer">
           <PolarGrid
             gridType="circle"
             radialLines={false}
             stroke="none"
-            className="first:fill-muted last:fill-background"
+            className="first:fill-muted last:fill-background cursor-pointer"
             polarRadius={[69, 59]}
           />
           <RadialBar
             dataKey="corriger"
             background
             cornerRadius={10}
+            className="cursor-pointer"
           />
           <PolarRadiusAxis
             tick={false}
             tickLine={false}
-            axisLine={false}>
+            axisLine={false}
+            className="cursor-pointer">
             <Label
+              className="cursor-pointer"
               content={({ viewBox }) => {
                 if (viewBox && "cx" in viewBox && "cy" in viewBox) {
                   return (
@@ -142,8 +149,8 @@ export function GraphStats({ addressStats }: { addressStats: AddressStats }) {
                       <tspan
                         x={viewBox.cx}
                         y={(viewBox.cy || 0) + 24}
-                        className="fill-muted-foreground text-[14px] font-sans font-bold">
-                        Adresse corrigée
+                        className="fill-muted-foreground text-[16px] font-sans font-bold">
+                        Corrigée
                       </tspan>
                     </text>
                   );
@@ -155,30 +162,34 @@ export function GraphStats({ addressStats }: { addressStats: AddressStats }) {
       </ChartContainer>
       <ChartContainer
         config={chartConfigNoMatch}
-        className="mx-auto aspect-square max-h-[150px] w-[150px]">
+        className="mx-auto aspect-square max-h-[150px] w-[150px] chart-container cursor-pointer">
         <RadialBarChart
           data={chartDataNoMatch}
           startAngle={180}
           endAngle={180 + angleNoMatch}
           innerRadius={65}
-          outerRadius={90}>
+          outerRadius={90}
+          className="cursor-pointer">
           <PolarGrid
             gridType="circle"
             radialLines={false}
             stroke="none"
-            className="first:fill-muted last:fill-background"
+            className="first:fill-muted last:fill-background cursor-pointer"
             polarRadius={[69, 59]}
           />
           <RadialBar
             dataKey="noMatch"
             background
             cornerRadius={10}
+            className="cursor-pointer"
           />
           <PolarRadiusAxis
             tick={false}
             tickLine={false}
-            axisLine={false}>
+            axisLine={false}
+            className="cursor-pointer">
             <Label
+              className="cursor-pointer"
               content={({ viewBox }) => {
                 if (viewBox && "cx" in viewBox && "cy" in viewBox) {
                   return (
@@ -196,8 +207,8 @@ export function GraphStats({ addressStats }: { addressStats: AddressStats }) {
                       <tspan
                         x={viewBox.cx}
                         y={(viewBox.cy || 0) + 24}
-                        className="fill-muted-foreground text-[14px] font-sans font-bold">
-                        Adresse érronée
+                        className="fill-muted-foreground text-[16px] font-sans font-bold">
+                        Non trouvée
                       </tspan>
                     </text>
                   );

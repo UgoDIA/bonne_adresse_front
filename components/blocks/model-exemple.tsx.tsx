@@ -24,8 +24,14 @@ export default function ModelExemple() {
               <th className="px-4 py-2 text-center bg-gray-300 ">
                 code_postal
               </th>
-              <th className="px-4 py-2 text-center bg-gray-300 rounded-tr-lg">
+              <th className="px-4 py-2 text-center bg-gray-300 ">
                 nom_commune
+              </th>
+              <th className="px-4 py-2 text-center bg-gray-300 opacity-30">
+                lat
+              </th>
+              <th className="px-4 py-2 text-center bg-gray-300 rounded-tr-lg opacity-30">
+                long
               </th>
             </tr>
           </thead>
@@ -42,6 +48,12 @@ export default function ModelExemple() {
               <td className="px-4 py-2 text-center border-gray-300">97426</td>
               <td className="px-4 py-2 text-center border-t border-gray-300">
                 Les Trois-Bassins
+              </td>
+              <td className="px-4 py-2 text-center border-t border-gray-300 opacity-30">
+                45.555
+              </td>
+              <td className="px-4 py-2 text-center border-t border-gray-300 opacity-30">
+                -5.555
               </td>
             </tr>
           </tbody>

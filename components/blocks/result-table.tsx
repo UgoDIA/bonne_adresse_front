@@ -27,9 +27,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { File } from "lucide-react";
+import { FaFileDownload } from "react-icons/fa";
 import { FaRightLong } from "react-icons/fa6";
 import * as XLSX from "xlsx";
+import { Input } from "../ui/input";
 
 export default function ResultTable({
   addressesTab,
@@ -40,13 +41,35 @@ export default function ResultTable({
 }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
+
+  const [searchTerms, setSearchTerms] = useState({
+    correct_address: "",
+    fiability: "",
+  });
+
+  const filteredProducts = addressesTab.filter((adresse) => {
+    return (
+      adresse.correct_address &&
+      adresse.correct_address
+        .toString()
+        .toLowerCase()
+        .includes((searchTerms.correct_address || "").toLowerCase()) &&
+      adresse.fiability &&
+      adresse.fiability
+        .toString()
+        .toLowerCase()
+        .includes((searchTerms.fiability || "").toLowerCase())
+    );
+  });
+
   const totalPages = Math.ceil(
-    (addressesTab && addressesTab.length ? addressesTab.length : 0) /
-      itemsPerPage
+    (filteredProducts && filteredProducts.length
+      ? filteredProducts.length
+      : 0) / itemsPerPage
   );
 
   const [currentAddress, setCurrentAddress] = useState(
-    (addressesTab || []).slice(
+    (filteredProducts || []).slice(
       (currentPage - 1) * itemsPerPage,
       currentPage * itemsPerPage
     )
@@ -66,7 +89,7 @@ export default function ResultTable({
     setCurrentPage(1);
   };
 
-  const jsonToExcel = (jsonData: any) => {
+  const exportToExcel = (jsonData: any) => {
     const headers = Object.keys(jsonData[0]); // Extraire les clés des objets pour les en-têtes
     const rows = jsonData.map((row: any) => {
       return headers.map((header) => {
@@ -117,27 +140,23 @@ export default function ResultTable({
     link.click();
   };
 
-  const exportToExcel = (jsonData: any) => {
-    jsonToExcel(jsonData);
-  };
-
   return (
     <Tabs defaultValue="all">
       <TabsContent value="all">
         <Card x-chunk="dashboard-06-chunk-0">
           <CardHeader>
-            <CardTitle>Tableau des adresses non valides</CardTitle>
+            <CardTitle>Tableau d'adresses</CardTitle>
             <CardDescription>
-              Voici la liste des adresses non valides qui ont été corrigées.
+              Voici la liste des adresses corrigées ou non trouvées.
             </CardDescription>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center justify-between">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="outline"
                     size="sm"
                     className="h-8 gap-1 bg-secondary text-secondary-foreground hover:bg-secondary/80 hover:text-secondary-foreground">
-                    <File className="h-3.5 w-3.5" />
+                    <FaFileDownload className="h-3.5 w-3.5" />
                     <span className="sr-only sm:not-sr-only sm:whitespace-nowrap ">
                       Exporter Les Adresses Corrigées
                     </span>
@@ -158,6 +177,33 @@ export default function ResultTable({
                   </DropdownMenuCheckboxItem>
                 </DropdownMenuContent>
               </DropdownMenu>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="h-8 gap-1 bg-primary text-primary-foreground hover:bg-primary/80 hover:text-primary-foreground">
+                    <FaFileDownload className="h-3.5 w-3.5" />
+                    <span className="sr-only sm:not-sr-only sm:whitespace-nowrap ">
+                      Exporter Le Tableau
+                    </span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  align="start"
+                  className="w-auto">
+                  <DropdownMenuLabel>Type d'export</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuCheckboxItem
+                    onClick={() => exportToCSV(filteredProducts)}>
+                    CSV
+                  </DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem
+                    onClick={() => exportToExcel(filteredProducts)}>
+                    EXCEL
+                  </DropdownMenuCheckboxItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </CardHeader>
 
@@ -167,7 +213,17 @@ export default function ResultTable({
               <TableHeader>
                 <TableRow>
                   <TableHead className="h-fit w-fit p-2 text-center">
-                    <span>Adresse d'origine</span>
+                    <Input
+                      placeholder="Adresse d'origine"
+                      value={searchTerms.correct_address}
+                      onChange={(e) =>
+                        setSearchTerms({
+                          ...searchTerms,
+                          correct_address: e.target.value,
+                        })
+                      }
+                      className="w-full my-2 text-center"
+                    />
                   </TableHead>
                   <TableHead className="h-fit w-fit p-2 text-center">
                     <FaRightLong className="h-5 w-5" />
@@ -176,34 +232,48 @@ export default function ResultTable({
                     <span>Adresse corrigée</span>
                   </TableHead>
                   <TableHead className="h-fit w-fit p-2 text-center">
-                    <span>% de Fiabilité</span>
+                    <Input
+                      placeholder="Fiabilité(%)"
+                      value={searchTerms.fiability}
+                      onChange={(e) =>
+                        setSearchTerms({
+                          ...searchTerms,
+                          fiability: e.target.value,
+                        })
+                      }
+                      className="w-full my-2 text-center"
+                    />
                   </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {addressesTab && addressesTab.length > 0 ? (
-                  addressesTab.map((address, index) => (
-                    <TableRow
-                      key={index}
-                      className={
-                        index % 2 === 0
-                          ? "bg-gray-100 dark:bg-gray-600 dark:text-white"
-                          : "bg-white dark:bg-gray-700 dark:text-white"
-                      }>
-                      <TableCell className="table-cell text-center">
-                        {address.origine_address}
-                      </TableCell>
-                      <TableCell className="table-cell text-center">
-                        <FaRightLong className="h-5 w-5" />
-                      </TableCell>
-                      <TableCell className="table-cell text-center">
-                        {address.correct_address}
-                      </TableCell>
-                      <TableCell className="table-cell text-center">
-                        {address.fiability}
-                      </TableCell>
-                    </TableRow>
-                  ))
+                {filteredProducts && filteredProducts.length > 0 ? (
+                  filteredProducts
+                    .sort(
+                      (a, b) => parseInt(b.fiability) - parseInt(a.fiability)
+                    )
+                    .map((address, index) => (
+                      <TableRow
+                        key={index}
+                        className={
+                          index % 2 === 0
+                            ? "bg-gray-100 dark:bg-gray-600 dark:text-white"
+                            : "bg-white dark:bg-gray-700 dark:text-white"
+                        }>
+                        <TableCell className="table-cell text-center">
+                          {address.origine_address}
+                        </TableCell>
+                        <TableCell className="table-cell text-center">
+                          <FaRightLong className="h-5 w-5" />
+                        </TableCell>
+                        <TableCell className="table-cell text-center">
+                          {address.correct_address}
+                        </TableCell>
+                        <TableCell className="table-cell text-center">
+                          {address.fiability}%
+                        </TableCell>
+                      </TableRow>
+                    ))
                 ) : (
                   <TableRow>
                     <TableCell
