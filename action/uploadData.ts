@@ -29,10 +29,10 @@ export const UploadData = async (data: File) => {
 
     return { success: "Les données on bien été traité !", result: response };
   } catch (error) {
-    console.error("Erreur lors de la création :", error);
+    console.error("Erreur lors de lu traitement :", error);
 
     return {
-      error: "Une erreur s'est produite lors de la création.",
+      error: "Une erreur s'est produite lors du traitement.",
     };
   }
 };
