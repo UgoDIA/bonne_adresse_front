@@ -239,9 +239,9 @@ export const UploadData = async (data: File) => {
         }
       ],
       stats: {
-        correct_pourcent: "68",
-        corriger_pourcent: "22",
-        no_match_pourcent: "10",
+        correct_pourcent: "95",
+        corriger_pourcent: "3",
+        no_match_pourcent: "2",
       },
       tab: [
         {
