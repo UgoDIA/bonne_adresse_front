@@ -132,6 +132,8 @@ export const PostFile = async (
             body: formData, // Ajoute le FormData au corps de la requête.
         });
 
+        console.log(response);
+
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`); // Vérifie si la réponse HTTP est une erreur.
         }
