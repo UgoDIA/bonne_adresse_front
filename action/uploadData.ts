@@ -17,7 +17,7 @@ export const UploadData = async (data: File) => {
     }
 
     const response = await PostFile(
-      process.env.API_REST + "/upload",
+      process.env.API_REST + "/upload_file/",
       data
     );
 
