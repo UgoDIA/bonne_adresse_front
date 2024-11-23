@@ -15,7 +15,7 @@ export const UploadData = async (data: File) => {
     }
 
     // Simuler un délai de réponse (par exemple 2 secondes)
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    await new Promise((resolve) => setTimeout(resolve, 3000));
 
     // Simulation de réponse statique
     const responseStatique = {
